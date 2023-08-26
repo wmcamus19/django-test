@@ -1,0 +1,29 @@
+{% extends 'main.html' %}
+{% load widget_tweaks %}
+
+{% block content %}
+<form class="row g-3" method="post">
+  {% csrf_token %}
+  <div class="col-md-6">
+    <label class="form-label">Firstname</label>
+    {% render_field form.first_name class="form-control" placeholder="Firstname" aria-label="Firstname" %}
+  </div>
+  <div class="col-md-6">
+    <label class="form-label">LastName</label>
+    {% render_field form.last_name class="form-control" placeholder="Lastname" aria-label="Lastname" %}
+  </div>
+  <div class="col-md-6">
+    <label class="form-label">Age</label>
+    {% render_field form.age class="form-control" placeholder="Age" aria-label="Age" min="0" max="10" %}
+  </div>
+  <div class="col-md-4">
+    <label class="form-label">Agent</label>
+    {% render_field form.agent class="form-select" placeholder="Agent" %}
+  </div>
+  <div class="col-12 btn-group mt-2" role="group" aria-label="Basic example">
+    <button type="submit" class="btn btn-primary">Update</button>
+    <a class="btn btn-success" href="{% url 'leads:lead_detail' object.pk %}">Go Back</a>
+
+  </div>
+</form>
+{% endblock content %}

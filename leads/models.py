@@ -39,6 +39,8 @@ class Lead (models.Model):
 
         verbose_name = 'Lead'
         verbose_name_plural = 'Leads'
+        # dev: I do need this for paginate_by in cbv cause it will produce an error of unconsistent result or not in order list.
+        ordering = ['id']
 
     def __str__(self):
         """Unicode representation of Lead."""
