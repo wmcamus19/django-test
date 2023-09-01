@@ -5,6 +5,7 @@ from django.db import models
 
 
 class User(AbstractUser):
+    telephone = models.IntegerField(blank=True, null=True, default=0)
     pass
 
 
@@ -39,7 +40,7 @@ class Lead (models.Model):
 
         verbose_name = 'Lead'
         verbose_name_plural = 'Leads'
-        # dev: I do need this for paginate_by in cbv cause it will produce an error of unconsistent result or not in order list.
+        # TODO: I do need this for paginate_by in cbv cause it will produce an error of unconsistent result or not in order list.
         ordering = ['id']
 
     def __str__(self):

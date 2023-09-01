@@ -1,6 +1,7 @@
 {% extends 'main.html' %} 
+
 {% block content %}
-<!-- List group with links -->
+
 <div class="list-group list-group-numbered">
 	<h1>Welcome to the {{ my_context.webpage_title }}</h1>
 	<h2>This is all of our leads.</h2>
@@ -14,12 +15,16 @@
 </svg>
 	Create a new Lead
 	</a>
+	
 	{% comment %} dev: for experiment only {% endcomment %}
 	This message: {{ my_string }}
 	{% for lead in leads %}
 	<!-- dev: root url.py namespace + path url. -->
-	<a href="{% url 'leads:lead_detail' lead.id %}" class="list-group-item list-group-item-action">{{ lead.first_name }}
-		{{ lead.last_name }}</a>
+	<a href="{% url 'leads:lead_detail' lead.id %}" 
+		class="list-group-item list-group-item-action">
+			{{ lead.first_name }} {{ lead.last_name }}
+	</a>
 	{% endfor %}
 </div>
+
 {% endblock content %}

@@ -1,0 +1,51 @@
+{% extends 'main.html' %} 
+
+{% load static %}
+
+{% block css_styles %}
+	<link rel="stylesheet" href="{% static 'css/aw.css' %}">
+{% endblock css_styles %}
+
+{% block content %}
+
+<form method="post">
+	{% csrf_token %}
+
+	{% comment %} {{ form.non_field_errors }} {% endcomment %}
+{% for errors  in form.non_field_errors %}
+	<ul class="list-inline">
+		<li class="list-inline-item">{{ errors }}</li>
+	</ul>
+	{% endfor %}
+
+	<label for="{{ form.username.id_for_label }}">username:</label>
+	{{ form.username }}
+	{% if form.username.errors %}
+			<div class="error-wrapper">
+					<ul class="errorlist custom-error-list">
+							{% for error in form.username.errors %}
+									<li class="custom-error">{{ error }}</li>
+							{% endfor %}
+					</ul>
+					{{ form.username.help_text }}
+			</div>
+	{% endif %}
+
+	<label for="{{ form.password.id_for_label }}">password:</label>
+	{{ form.password }}
+	{% if form.password.errors %}
+			<div class="error-wrapper">
+					<ul class="errorlist custom-error-list">
+							{% for error in form.password.errors %}
+									<li class="custom-error">{{ error }}</li>
+							{% endfor %}
+					</ul>
+					{{ form.password.help_text }}
+			</div>				
+	{% endif %}
+</div>
+
+	<button type="submit">Login</button>
+</form>
+
+{% endblock content %}

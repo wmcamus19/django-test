@@ -1,6 +1,6 @@
 from django.middleware.common import CommonMiddleware
 
-# dev: For experiment only.
+# TODO: For experiment only.
 
 
 class CustomLocaleMiddleware(CommonMiddleware):

@@ -17,7 +17,7 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# Quick-start development settings - unsuitable for production
+# Quick-start TODOelopment settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
@@ -38,8 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # dev: Importing python library for giving me more control on the template displaying for CBV.
-    'widget_tweaks',
     'leads',
 ]
 
@@ -51,8 +49,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # dev: I am doing an experiment on this to "my_string" variable.
-    'leads.middleware.CustomLocaleMiddleware',
+    # TODO: I am doing an experiment on this to "my_string" variable.
+    # 'leads.middleware.CustomLocaleMiddleware',
 ]
 
 ROOT_URLCONF = 'dcrm.urls'
@@ -125,10 +123,25 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+# TODO: root folder of all static files.
+STATIC_ROOT = 'static_root'
+
+#  TODO: For global assets.
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+]
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# dev: This is for the models.py -> AbstractUser Class.
+# TODO: This is for the models.py -> AbstractUser Class.
 AUTH_USER_MODEL = 'leads.User'
+
+# TODO: For the LoginView authentication: navigate after successful login.
+LOGIN_REDIRECT_URL = '/leads'
+
+# TODO: There are two type's. 1. console and 2. smtp
+# => we use console since smtp for production and third party services
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

@@ -1,6 +1,7 @@
 {% extends 'main.html' %} 
 
 {% block content %}
+
 <h1>Welcome to the {{ my_context.webpage_title }}</h1>
 <h2>This is all of our leads.</h2>
 <ul class="list-group">
@@ -15,4 +16,5 @@
 	<a class="btn btn-info" href="{% url 'leads:lead_update' object.id %}">Edit</a>
 	<a class="btn btn-danger" href="{% url 'leads:lead_delete' object.id %}">Delete</a>
 </div>
+
 {% endblock content %}

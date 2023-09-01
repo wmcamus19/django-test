@@ -1,0 +1,12 @@
+.errorlist {
+  color: green;
+}
+
+.errorlist li {
+  font-size: 38px;
+}
+
+
+.fieldWrapper label {
+  color: pink;
+}
