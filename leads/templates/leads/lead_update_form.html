@@ -1,6 +1,4 @@
-{% extends 'main.html' %}
-
-{% block content %}
+{% extends 'main.html' %} {% block content %}
 
 <form class="row g-3" method="post">
   {% csrf_token %}
@@ -22,8 +20,9 @@
   </div>
   <div class="col-12 btn-group mt-2" role="group" aria-label="Basic example">
     <button type="submit" class="btn btn-primary">Update</button>
-    <a class="btn btn-success" href="{% url 'leads:lead_detail' object.pk %}">Go Back</a>
-
+    <a class="btn btn-success" href="{% url 'leads:lead_detail' object.pk %}"
+      >Go Back</a
+    >
   </div>
 </form>
 

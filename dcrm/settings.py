@@ -50,7 +50,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # TODO: I am doing an experiment on this to "my_string" variable.
-    # 'leads.middleware.CustomLocaleMiddleware',
+    'leads.middleware.CustomLocaleMiddleware',
 ]
 
 ROOT_URLCONF = 'dcrm.urls'
@@ -140,8 +140,13 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'leads.User'
 
 # TODO: For the LoginView authentication: navigate after successful login.
-LOGIN_REDIRECT_URL = '/leads'
+LOGIN_REDIRECT_URL = '/'
 
 # TODO: There are two type's. 1. console and 2. smtp
 # => we use console since smtp for production and third party services
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# TODO: We need to declare the LOGIN_URL
+# from django.contrib.auth.views import LogoutView
+# path('logout/', LogoutView.as_view(), name='logout'),
+LOGIN_URL = 'login'

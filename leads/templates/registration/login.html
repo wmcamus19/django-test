@@ -1,51 +1,54 @@
-{% extends 'main.html' %} 
-
-{% load static %}
-
-{% block css_styles %}
-	<link rel="stylesheet" href="{% static 'css/aw.css' %}">
-{% endblock css_styles %}
-
-{% block content %}
+{% extends 'main2.html' %} {% load static %} {% block css_styles %}
+<link rel="stylesheet" href="{% static 'css/aw.css' %}" />
+{% endblock css_styles %} {% block content %}
 
 <form method="post">
-	{% csrf_token %}
+  {% csrf_token %}
+  <!-- {{ form.non_field_errors }} -->
+  {% for errors in form.non_field_errors %}
+  <ul class="list-inline">
+    <li class="list-inline-item">{{ errors }}</li>
+  </ul>
+  {% endfor %}
 
-	{% comment %} {{ form.non_field_errors }} {% endcomment %}
-{% for errors  in form.non_field_errors %}
-	<ul class="list-inline">
-		<li class="list-inline-item">{{ errors }}</li>
-	</ul>
-	{% endfor %}
+  <div class="col-md-6">
+    <label class="form-label" for="{{ form.username.id_for_label }}"
+      >Username:</label
+    >
+    {{ form.username }} {% if form.username.errors %}
+    <div class="error-wrapper">
+      <ul class="errorlist custom-error-list">
+        {% for error in form.username.errors %}
+        <li class="custom-error">{{ error }}</li>
+        {% endfor %}
+      </ul>
+      {{ form.username.help_text }}
+    </div>
+    {% endif %}
+  </div>
 
-	<label for="{{ form.username.id_for_label }}">username:</label>
-	{{ form.username }}
-	{% if form.username.errors %}
-			<div class="error-wrapper">
-					<ul class="errorlist custom-error-list">
-							{% for error in form.username.errors %}
-									<li class="custom-error">{{ error }}</li>
-							{% endfor %}
-					</ul>
-					{{ form.username.help_text }}
-			</div>
-	{% endif %}
+  <div class="col-md-6">
+    <label class="form-label" for="{{ form.password.id_for_label }}"
+      >Password:</label
+    >
+    {{ form.password }} {% if form.password.errors %}
+    <div class="error-wrapper">
+      <ul class="errorlist custom-error-list">
+        {% for error in form.password.errors %}
+        <li class="custom-error">{{ error }}</li>
+        {% endfor %}
+      </ul>
+      {{ form.password.help_text }}
+    </div>
+    {% endif %}
+  </div>
 
-	<label for="{{ form.password.id_for_label }}">password:</label>
-	{{ form.password }}
-	{% if form.password.errors %}
-			<div class="error-wrapper">
-					<ul class="errorlist custom-error-list">
-							{% for error in form.password.errors %}
-									<li class="custom-error">{{ error }}</li>
-							{% endfor %}
-					</ul>
-					{{ form.password.help_text }}
-			</div>				
-	{% endif %}
-</div>
-
-	<button type="submit">Login</button>
+  <div class="col-md-6">
+    <button class="btn btn-success" type="submit">Login</button>
+  </div>
+  <div class="col-md-6">
+    <a class="btn btn-success" href="/">Back</a>
+  </div>
 </form>
 
 {% endblock content %}

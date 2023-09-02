@@ -19,15 +19,17 @@ Including another URLconf
 from django.conf import global_settings
 from django.conf.urls import static
 from django.contrib import admin
+from django.contrib.auth.views import LogoutView
 from django.urls import path, include
 
 from leads.views import CustomLoginView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('leads/', include('leads.urls', namespace='leads')),
+    path('', include('leads.urls', namespace='leads'), name='main'),
     # path('login/', LoginView.as_view(), name='login'),
-    path('login/', CustomLoginView.as_view(), name='login'),
+    path('login/', CustomLoginView.as_view(redirect_authenticated_user=True), name='login'),
+    path('logout/', LogoutView.as_view(), name='logout'),
 ]
 
 if global_settings.DEBUG:

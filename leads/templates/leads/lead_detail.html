@@ -1,20 +1,22 @@
-{% extends 'main.html' %} 
-
-{% block content %}
+{% extends 'main.html' %} {% block content %}
 
 <h1>Welcome to the {{ my_context.webpage_title }}</h1>
 <h2>This is all of our leads.</h2>
 <ul class="list-group">
-	<li class="list-group-item">Id: {{ object.id }}</li>
-	<li class="list-group-item">Firstname: {{ object.first_name }}</li>
-	<li class="list-group-item">Lastname: {{ object.last_name }}</li>
-	<li class="list-group-item">Age: {{ object.age }}</li>
-	<li class="list-group-item">Agent Id:{{ object.agent_id }}</li>
+  <li class="list-group-item">Id: {{ object.id }}</li>
+  <li class="list-group-item">Firstname: {{ object.first_name }}</li>
+  <li class="list-group-item">Lastname: {{ object.last_name }}</li>
+  <li class="list-group-item">Age: {{ object.age }}</li>
+  <li class="list-group-item">Agent Id:{{ object.agent_id }}</li>
 </ul>
 <div class="btn-group mt-2" role="group" aria-label="Basic example">
-	<a class="btn btn-warning" href="{% url 'leads:lead_list' %}">Go Back</a>
-	<a class="btn btn-info" href="{% url 'leads:lead_update' object.id %}">Edit</a>
-	<a class="btn btn-danger" href="{% url 'leads:lead_delete' object.id %}">Delete</a>
+  <a class="btn btn-warning" href="{% url 'leads:lead_list' %}">Go Back</a>
+  <a class="btn btn-info" href="{% url 'leads:lead_update' object.id %}"
+    >Edit</a
+  >
+  <a class="btn btn-danger" href="{% url 'leads:lead_delete' object.id %}"
+    >Delete</a
+  >
 </div>
 
 {% endblock content %}

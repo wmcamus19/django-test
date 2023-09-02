@@ -1,5 +1,8 @@
 import typing
 from typing import Any
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http.response import HttpResponse
 from django.urls import reverse_lazy
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.views import LoginView
@@ -8,7 +11,8 @@ from django.db import models
 from django.db.models.query import QuerySet
 from django.forms.forms import BaseForm
 from django.forms.models import BaseModelForm
-from django.http import HttpResponse
+from django.http import HttpRequest, HttpResponse
+from django.utils.decorators import method_decorator
 from django.views.generic import (
     CreateView, DeleteView, DetailView, ListView, UpdateView
 )
@@ -20,6 +24,7 @@ from .models import Lead, User
 
 
 class TestView (CreateView):
+
     def form_valid(self, form: BaseModelForm) -> HttpResponse:
         student_number = f"SN"
         form.instance.student_number = student_number
@@ -42,7 +47,7 @@ class CustomLoginView(LoginView):
     def get_form(self, form_class: type[AuthenticationForm] = None) -> BaseForm:
         form = super().get_form(form_class)
         form.fields['username'].widget.attrs.update(
-            {'class': 'custom-class wtf', 'disabled': True,
+            {'class': 'custom-class wtf', 'disabled': False,
              'aria-label': 'Haha', 'placeholder': 'NANDATO!?', 'value': 'Not true', 'id': 'adasd'})
         form.fields['username'].help_text = 'sauce everyone?'
         form.fields['password'].help_text = 'Not interested.'
@@ -81,7 +86,7 @@ class LeadListView(ListView):
         context.update({
             'tab_title': 'Leads Page',
             'webpage_title': 'Leads Page!!',
-            'my_string': 'original value',
+            'aw': 'original value',
         })
         return context
 
@@ -95,12 +100,18 @@ class LeadDetailView(DetailView):
         return super().get_context_data(**kwargs)
 
 
-class LeadCreateView(CreateView):
+@method_decorator(login_required, name='dispatch')
+class LeadCreateView(LoginRequiredMixin, CreateView):
     # TODO: path('create/', LeadCreateView.as_view(), name='lead_create'),
     model = Lead
     fields = ["first_name", "last_name", "age", "agent",]
     template_name = "leads/lead_create.html"
-    success_url = reverse_lazy("leads:lead_create")
+    success_url = reverse_lazy('leads:lead_create')
+    # def get(self, request: HttpRequest, *args: str, **kwargs: Any) -> HttpResponse:
+    #     if not request.user.is_authenticated:
+    #         return reverse_lazy('leads:leads_list')
+
+    #     return super().get(request, *args, **kwargs)
 
     def get_form(self, form_class: type[BaseModelForm] = None) -> BaseModelForm:
         form = super().get_form(form_class)
@@ -111,6 +122,7 @@ class LeadCreateView(CreateView):
         return form
 
     # TODO: Form validation before sending the email.
+
     def form_valid(self, form: BaseModelForm) -> HttpResponse:
 
         # TODO: Credential is for testing purposes.
