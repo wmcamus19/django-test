@@ -1,5 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.urls import reverse_lazy
+
 
 # Create your models here.
 
@@ -47,6 +49,17 @@ class Lead (models.Model):
         """Unicode representation of Lead."""
         return f"{self.first_name} {self.last_name}"
 
+    def get_lead_list(self):
+        return reverse_lazy("leads:lead_list")
+
+    def get_lead_detail(self):
+        return reverse_lazy("leads:lead_detail", kwargs={"pk": self.pk})
+
+    def get_lead_update(self):
+        return reverse_lazy("leads:lead_update", kwargs={"pk": self.pk})
+
+    def get_lead_delete(self):
+        return reverse_lazy("leads:lead_delete", kwargs={"pk": self.pk})
 
 # class Lead (models.Model):
 

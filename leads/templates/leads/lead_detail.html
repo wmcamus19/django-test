@@ -10,13 +10,9 @@
   <li class="list-group-item">Agent Id:{{ object.agent_id }}</li>
 </ul>
 <div class="btn-group mt-2" role="group" aria-label="Basic example">
-  <a class="btn btn-warning" href="{% url 'leads:lead_list' %}">Go Back</a>
-  <a class="btn btn-info" href="{% url 'leads:lead_update' object.id %}"
-    >Edit</a
-  >
-  <a class="btn btn-danger" href="{% url 'leads:lead_delete' object.id %}"
-    >Delete</a
-  >
+  <a class="btn btn-warning" href="{{ object.get_lead_list }}">Go Back</a>
+  <a class="btn btn-info" href="{{ object.get_lead_update }}">Edit</a>
+  <a class="btn btn-danger" href="{{ object.get_lead_delete }}">Delete</a>
 </div>
 
 {% endblock content %}

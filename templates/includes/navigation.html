@@ -38,8 +38,13 @@
         <li class="nav-item">
           <a class="nav-link" href="{% url 'leads:lead_list' %}">Home</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="{% url 'leads:test' %}"
+            >Test</a
+          >
+          {% if not request.user.is_authenticated %}
+        </li>
 
-        {% if not request.user.is_authenticated %}
         <li class="nav-item">
           <a
             class="nav-link"

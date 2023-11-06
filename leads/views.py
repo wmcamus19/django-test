@@ -8,37 +8,28 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.views import LoginView
 from django.core.mail import send_mail
 from django.db import models
-from django.db.models.query import QuerySet
 from django.forms.forms import BaseForm
 from django.forms.models import BaseModelForm
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpResponse
 from django.utils.decorators import method_decorator
 from django.views.generic import (
     CreateView, DeleteView, DetailView, ListView, UpdateView
 )
 
 
-from .models import Lead, User
+from .models import Agent, Lead
 
 # Create your views here.
 
 
-class TestView (CreateView):
-
-    def form_valid(self, form: BaseModelForm) -> HttpResponse:
-        student_number = f"SN"
-        form.instance.student_number = student_number
-        return super().form_valid(form)
-
-
-class HomePageView(ListView):
-    model = User
+class HomePageView(DetailView):
     template_name = "leads/home.html"
     context_object_name = 'users'
 
-    def get_queryset(self) -> QuerySet[Any]:
-        queryset = super(HomePageView, self).get_queryset()
-        return queryset
+    # TODO: returns one record: get_object use for one object.
+    def get_object(self, queryset: models.QuerySet[Any] = None) -> models.Model:
+        person = Agent.objects.filter(id=1).first()
+        return person
 
 
 class CustomLoginView(LoginView):
@@ -47,8 +38,7 @@ class CustomLoginView(LoginView):
     def get_form(self, form_class: type[AuthenticationForm] = None) -> BaseForm:
         form = super().get_form(form_class)
         form.fields['username'].widget.attrs.update(
-            {'class': 'custom-class wtf', 'disabled': False,
-             'aria-label': 'Haha', 'placeholder': 'NANDATO!?', 'value': 'Not true', 'id': 'adasd'})
+            {'class': 'custom-class wtf', 'disabled': False, 'aria-label': 'Haha', 'placeholder': 'NANDATO!?', 'value': 'Not true', 'id': 'adasd'})
         form.fields['username'].help_text = 'sauce everyone?'
         form.fields['password'].help_text = 'Not interested.'
 
@@ -76,13 +66,19 @@ class LeadListView(ListView):
     def get_queryset(self):
         queryset = super(LeadListView, self).get_queryset()
         # TODO: I need the .values to convert it into dictionary insted of instance.
-        queryset = queryset.filter(first_name__startswith='E').values()
-        return queryset
+        # queryset = queryset.filter(first_name__startswith='E').values()
+        letter = 'E%'
+        sql = """
+            SELECT * FROM leads_lead WHERE first_name LIKE %s
+        """
+        person = queryset.raw(sql, [letter])
+        return person
 
     # TODO: For data manipulation before sending it to the template view.
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         # TODO: Adding additional variables with values.
+
         context.update({
             'tab_title': 'Leads Page',
             'webpage_title': 'Leads Page!!',
@@ -107,24 +103,17 @@ class LeadCreateView(LoginRequiredMixin, CreateView):
     fields = ["first_name", "last_name", "age", "agent",]
     template_name = "leads/lead_create.html"
     success_url = reverse_lazy('leads:lead_create')
-    # def get(self, request: HttpRequest, *args: str, **kwargs: Any) -> HttpResponse:
-    #     if not request.user.is_authenticated:
-    #         return reverse_lazy('leads:leads_list')
-
-    #     return super().get(request, *args, **kwargs)
 
     def get_form(self, form_class: type[BaseModelForm] = None) -> BaseModelForm:
         form = super().get_form(form_class)
         form.fields["first_name"].widget.attrs.update(
             {"placeholder": "Nani", })
         form.fields["age"].widget.attrs.update({"min": 0, "max": 10, })
-
         return form
 
     # TODO: Form validation before sending the email.
 
     def form_valid(self, form: BaseModelForm) -> HttpResponse:
-
         # TODO: Credential is for testing purposes.
         send_mail(subject='Cool Subject.', message='This is a cool subjects',
                   from_email='test@test.com', recipient_list=['test2@test.com'],)
@@ -140,15 +129,10 @@ class LeadUpdateView(UpdateView):
     def get_form(self, form_class: type[BaseModelForm] = None) -> BaseModelForm:
         form = super().get_form(form_class)
         form.fields['age'].widget.attrs.update({'min': 0, 'max': 10})
-
         return form
 
-    # # TODO: pre-method.
-    # def get_queryset(self):
-    #     queryset = super().get_queryset()
-    #     return queryset
-
     # TODO: pre-method. depended to get_queryset method.
+
     def get_object(self, queryset: models.QuerySet[typing.Any] = None) -> models.Model:
         obj = super().get_object(queryset)
 

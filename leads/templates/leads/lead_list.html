@@ -26,7 +26,7 @@
   {% for lead in leads %}
   <!-- dev: root url.py namespace + path url. -->
   <a
-    href="{% url 'leads:lead_detail' lead.id %}"
+    href="{{ lead.get_lead_detail }}"
     class="list-group-item list-group-item-action"
   >
     {{ lead.first_name }} {{ lead.last_name }}
